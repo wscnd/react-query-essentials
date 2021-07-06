@@ -22,7 +22,7 @@ function App() {
       //   throw new Error("Error message");
       // });
     },
-    // { refetchOnWindowFocus: false },
+    { staleTime: 5000 },
   );
 
   console.log(queryInfo);

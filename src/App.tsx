@@ -6,6 +6,7 @@ import { useBerries } from "./hooks/useBerries";
 import { PokemonCount } from "./PokemonCount";
 import { PokemonSearch } from "./PokemonSearch";
 import { usePokemon } from "./hooks/usePokemon";
+import {PokemonCancellableSearch} from './PokemonCancellableSearch'
 
 function App() {
   const [show, toggle] = useState(true);
@@ -19,7 +20,8 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <button onClick={() => toggle((previous) => !previous)}>show</button>
-        <PokemonSearch />
+        {/* <PokemonSearch /> */}
+        <PokemonCancellableSearch />
         {/* {show ? (
           <>
             <PokemonCount />

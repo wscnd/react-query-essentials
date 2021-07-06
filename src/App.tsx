@@ -10,21 +10,25 @@ export interface Pokemon {
 }
 
 function App() {
-  const queryInfo = useQuery<Pokemon[]>("pokemon", () =>
-    axios("https://pokeapi.co/api/v2/pokemon").then((res) => res.data.results),
-  );
+  const queryInfo = useQuery<Pokemon[]>("pokemon", async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    return axios("https://pokeapi.co/api/v2/pokemon").then(
+      (res) => res.data.results,
+    );
+  });
 
-  console.log(useQuery);
+  console.log(queryInfo);
 
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        {queryInfo.data?.length &&
-          queryInfo.data.map((pokemon) => (
-            <div key={pokemon.name}>{pokemon.name}</div>
-          ))}
+        {queryInfo.isLoading
+          ? "...Loading..."
+          : queryInfo.data?.length &&
+            queryInfo.data.map((pokemon) => (
+              <div key={pokemon.name}>{pokemon.name}</div>
+            ))}
       </header>
     </div>
   );

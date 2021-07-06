@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import axios from "axios";
-import type { Pokemon } from "./DisplayPokemon";
+import type { Pokemon } from "../DisplayPokemon";
 
 export type PokeApiResponse = {
   results: Pokemon[];

@@ -30,6 +30,10 @@ export const usePokemonByName = ({ pokemonName }: usePokemonByNameProps) => {
     },
     {
       enabled: !!pokemonName,
+      // retry: 1,
+      retry: false,
+      retryDelay: /** 1000 seconds or a fancy function**/ (failureCount) =>
+        Math.min(1000 * 2 ** failureCount, 30000),
     },
   );
 };

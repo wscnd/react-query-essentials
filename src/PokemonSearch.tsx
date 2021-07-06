@@ -29,6 +29,10 @@ export const PokemonSearch = ({}: PokemonSearchProps) => {
         <div>
           <img src={pokemon.data.sprites.front_default} alt="pokemon" />
         </div>
+      ) : pokemon.isError ? (
+        <span>
+          Error fetching <strong>{input}</strong>!
+        </span>
       ) : null}
     </div>
   );

@@ -43,5 +43,6 @@
 }
 
 button {
-  font-size: calc(8px + 2vmin);
+  font-size: calc(8px + 1vmin);
+  margin-bottom: 2rem;
 }

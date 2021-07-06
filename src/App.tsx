@@ -22,13 +22,16 @@ function App() {
       //   throw new Error("Error message");
       // });
     },
-    { refetchOnWindowFocus: false },
+    // { refetchOnWindowFocus: false },
   );
 
   console.log(queryInfo);
 
   return (
     <div className="App">
+      {queryInfo.isFetching ? (
+        <span className="Spacing">Updating...</span>
+      ) : null}
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         {queryInfo.isLoading

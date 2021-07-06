@@ -12,9 +12,12 @@ export interface Pokemon {
 function App() {
   const queryInfo = useQuery<Pokemon[]>("pokemon", async () => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    return axios("https://pokeapi.co/api/v2/pokemon").then(
-      (res) => res.data.results,
-    );
+
+    return axios("https://pokeapi.co/api/v2/pokemon")
+      .then((res) => res.data.results)
+      .then((data) => {
+        throw new Error("Error message");
+      });
   });
 
   console.log(queryInfo);
@@ -25,6 +28,8 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         {queryInfo.isLoading
           ? "...Loading..."
+          : queryInfo.isError
+          ? ` ${queryInfo.error}`
           : queryInfo.data?.length &&
             queryInfo.data.map((pokemon) => (
               <div key={pokemon.name}>{pokemon.name}</div>

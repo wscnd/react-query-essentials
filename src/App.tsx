@@ -13,11 +13,12 @@ function App() {
   const queryInfo = useQuery<Pokemon[]>("pokemon", async () => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    return axios("https://pokeapi.co/api/v2/pokemon")
-      .then((res) => res.data.results)
-      .then((data) => {
-        throw new Error("Error message");
-      });
+    return axios("https://pokeapi.co/api/v2/pokemon").then(
+      (res) => res.data.results,
+    );
+    // .then((data) => {
+    //   throw new Error("Error message");
+    // });
   });
 
   console.log(queryInfo);

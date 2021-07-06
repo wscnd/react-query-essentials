@@ -1,4 +1,5 @@
 import React from "react";
+import { UseQueryResult } from "react-query";
 import { usePokemon } from "./hooks/usePokemon";
 
 export interface Pokemon {
@@ -6,10 +7,11 @@ export interface Pokemon {
   url: string;
 }
 
-type PokemonProps = {};
+type PokemonProps = {
+  queryInfo: UseQueryResult<Pokemon[], unknown>;
+};
 
-export const DisplayPokemon = () => {
-  const queryInfo = usePokemon();
+export const PokemonList = ({ queryInfo }: PokemonProps) => {
   return (
     <>
       {queryInfo.isFetching ? (

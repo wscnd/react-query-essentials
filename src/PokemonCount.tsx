@@ -1,5 +1,4 @@
 import React from "react";
-import { DisplayPokemon } from "./DisplayPokemon";
 import { usePokemon } from "./hooks/usePokemon";
 
 type PokemonCountProps = {};

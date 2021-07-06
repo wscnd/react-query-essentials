@@ -1,5 +1,4 @@
 import React from "react";
-import { PokemonCount } from "./PokemonCount";
 import { usePokemon } from "./hooks/usePokemon";
 
 export interface Pokemon {

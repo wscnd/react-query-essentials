@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { DisplayPokemon } from "./DisplayPokemon";
+import { DisplayPokemon } from "./PokemonDisplay";
 import { useBerries } from "./hooks/useBerries";
 import { PokemonCount } from "./PokemonCount";
 

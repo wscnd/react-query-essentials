@@ -16,7 +16,7 @@ export type PokeApiResponse = {
 
 export const usePokemonByName = ({ pokemonName }: usePokemonByNameProps) => {
   return useQuery(
-    pokemonName,
+    ["pokemon", pokemonName],
     async () => {
       await new Promise((res) => setTimeout(res, 2000));
 

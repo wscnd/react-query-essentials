@@ -7,11 +7,13 @@ export interface Pokemon {
   url: string;
 }
 
-type PokemonProps = {};
+type PokemonProps = {
+  queryKey: string
+};
 
-export const Pokemon = ({}: PokemonProps) => {
+export const Pokemon = ({queryKey}: PokemonProps) => {
   const queryInfo = useQuery<Pokemon[]>(
-    "pokemon",
+    queryKey,
     async () => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -25,7 +27,7 @@ export const Pokemon = ({}: PokemonProps) => {
     {
       // refetchOnWindowFocus: false ,
       // staleTime: 5000,
-      cacheTime: 0,
+      // cacheTime: 0,
     },
   );
 

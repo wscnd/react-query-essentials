@@ -12,7 +12,8 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <button onClick={() => toggle((previous) => !previous)}>show</button>
 
-        {show ? <Pokemon /> : null}
+        {show ? <Pokemon queryKey="pokemon1" /> : null}
+        {show ? <Pokemon queryKey="pokemon1" /> : null}
       </header>
     </div>
   );

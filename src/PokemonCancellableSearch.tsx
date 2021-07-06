@@ -1,12 +1,12 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { usePokemonByName } from "./hooks/usePokemonByName";
+import { useCancellablePokemonByName } from "./hooks/useCancellablePokemonByName";
 
 type PokemonSearchProps = {};
 
 export const PokemonCancellableSearch = ({}: PokemonSearchProps) => {
   const [input, setInput] = useState("");
 
-  const pokemon = usePokemonByName({ pokemonName: input });
+  const pokemon = useCancellablePokemonByName({ pokemonName: input });
 
   const onChangeHandler = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {

@@ -15,11 +15,21 @@ export type PokeApiResponse = {
 };
 
 export const usePokemonByName = ({ pokemonName }: usePokemonByNameProps) => {
-  return useQuery(pokemonName, async () => {
-    return axios
-      .get<PokeApiResponse>(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
-      .then((data) => {
-        return data.data;
-      });
-  });
+  return useQuery(
+    pokemonName,
+    async () => {
+      await new Promise((res) => setTimeout(res, 2000));
+
+      return axios
+        .get<PokeApiResponse>(
+          `https://pokeapi.co/api/v2/pokemon/${pokemonName}`,
+        )
+        .then((data) => {
+          return data.data;
+        });
+    },
+    {
+      enabled: !!pokemonName,
+    },
+  );
 };

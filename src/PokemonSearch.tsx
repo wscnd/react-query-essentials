@@ -13,7 +13,7 @@ export const PokemonSearch = ({}: PokemonSearchProps) => {
   const onSubmitHandler = useCallback(() => {
     if (inputRef.current) {
       console.log(inputRef.current.value);
-      setInput(inputRef.current.value);
+      setInput(String(inputRef.current.value).toLowerCase());
     }
   }, []);
 

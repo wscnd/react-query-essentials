@@ -4,12 +4,13 @@ import "./App.css";
 import { PokemonList } from "./PokemonList";
 import { useBerries } from "./hooks/useBerries";
 import { PokemonCount } from "./PokemonCount";
+import { PokemonSearch } from "./PokemonSearch";
 import { usePokemon } from "./hooks/usePokemon";
 
 function App() {
   const [show, toggle] = useState(true);
-  const berries = useBerries();
-  const pokemonInfo = usePokemon();
+  // const berries = useBerries();
+  // const pokemonInfo = usePokemon();
 
   // console.log("berries:", berries);
 
@@ -18,6 +19,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <button onClick={() => toggle((previous) => !previous)}>show</button>
+        <PokemonSearch />
         {/* {show ? (
           <>
             <PokemonCount />

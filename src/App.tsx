@@ -11,6 +11,7 @@ import { ToggleView } from "./ToggleView";
 import { PokemonDependentQuery } from "./PokemonDependentQuery";
 import { usePokemonWithInitialData } from "./hooks/usePokemonWithInitialData";
 import data from "./initialPartialPokemon.json";
+import { PokemonRelatedQueries } from "./PokemonRelatedQueries";
 
 function App() {
   // const [show, toggle] = useState(true);
@@ -19,9 +20,9 @@ function App() {
   // console.log("berries:", berries);
   //
 
-  const withInitialPokemon = usePokemonWithInitialData({
-    initialData: data.results,
-  });
+  // const withInitialPokemon = usePokemonWithInitialData({
+  //   initialData: data.results,
+  // });
 
   return (
     <div className="App">
@@ -35,7 +36,8 @@ function App() {
         </ToggleView> */}
         {/* <PokemonDependentQuery /> */}
 
-        <PokemonList queryInfo={withInitialPokemon} />
+        {/* <PokemonList queryInfo={withInitialPokemon} /> */}
+        <PokemonRelatedQueries />
       </header>
     </div>
   );

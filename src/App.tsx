@@ -10,7 +10,7 @@ import { PokemonCancellableSearch } from "./PokemonCancellableSearch";
 import { ToggleView } from "./ToggleView";
 import { PokemonDependentQuery } from "./PokemonDependentQuery";
 import { usePokemonWithInitialData } from "./hooks/usePokemonWithInitialData";
-import data from "./initialPokemon.json";
+import data from "./initialPartialPokemon.json";
 
 function App() {
   // const [show, toggle] = useState(true);

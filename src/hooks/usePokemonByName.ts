@@ -12,6 +12,7 @@ export type PokeApiResponse = {
   sprites: {
     front_default: string;
   };
+  url?: string;
 };
 
 export const usePokemonByName = ({ pokemonName }: usePokemonByNameProps) => {

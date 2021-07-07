@@ -13,6 +13,7 @@ import { usePokemonWithInitialData } from "./hooks/usePokemonWithInitialData";
 import data from "./initialPartialPokemon.json";
 import { PokemonRelatedQueries } from "./PokemonRelatedQueries";
 import { PokemonSeededQueries } from "./PokemonSeededQueries";
+import { PokemonPushedQueries } from "./PokemonPushedQueries";
 
 function App() {
   // const [show, toggle] = useState(true);
@@ -43,7 +44,8 @@ function App() {
 
         {/* <PokemonRelatedQueries /> */}
 
-        <PokemonSeededQueries />
+        {/* <PokemonSeededQueries /> */}
+        <PokemonPushedQueries />
       </header>
     </div>
   );

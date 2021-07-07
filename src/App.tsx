@@ -12,6 +12,7 @@ import { PokemonDependentQuery } from "./PokemonDependentQuery";
 import { usePokemonWithInitialData } from "./hooks/usePokemonWithInitialData";
 import data from "./initialPartialPokemon.json";
 import { PokemonRelatedQueries } from "./PokemonRelatedQueries";
+import { PokemonSeededQueries } from "./PokemonSeededQueries";
 
 function App() {
   // const [show, toggle] = useState(true);
@@ -29,7 +30,9 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         {/* <PokemonSearch /> */}
+
         {/* <PokemonCancellableSearch /> */}
+
         {/* <ToggleView>
           <PokemonCount />
           <PokemonList queryInfo={pokemonInfo} />
@@ -37,7 +40,10 @@ function App() {
         {/* <PokemonDependentQuery /> */}
 
         {/* <PokemonList queryInfo={withInitialPokemon} /> */}
-        <PokemonRelatedQueries />
+
+        {/* <PokemonRelatedQueries /> */}
+
+        <PokemonSeededQueries />
       </header>
     </div>
   );

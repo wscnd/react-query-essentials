@@ -8,6 +8,7 @@ import { PokemonSearch } from "./PokemonSearch";
 import { usePokemon } from "./hooks/usePokemon";
 import { PokemonCancellableSearch } from "./PokemonCancellableSearch";
 import { ToggleView } from "./ToggleView";
+import { PokemonDependentQuery } from "./PokemonDependentQuery";
 
 function App() {
   const [show, toggle] = useState(true);
@@ -21,11 +22,12 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         {/* <PokemonSearch /> */}
-        <PokemonCancellableSearch />
+        {/* <PokemonCancellableSearch /> */}
         {/* <ToggleView>
           <PokemonCount />
           <PokemonList queryInfo={pokemonInfo} />
         </ToggleView> */}
+        <PokemonDependentQuery />
       </header>
     </div>
   );

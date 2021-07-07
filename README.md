@@ -4,7 +4,9 @@ This is the code from doing `React Query Essentials v2` course.
 
 It has some divergencies from the original code, as it used `react-query@2` and I'm using `react-query@3^`.
 
-Commits are references to the course outline.
+Most differences are covered by their [docs](https://react-query.tanstack.com/guides/migrating-to-react-query-3) and pretty straightforward.
+
+Commits are references to the course outline. <strike>(I should've used branches instead)</strike>
 
 Course is [here](https://learn.tanstack.com/p/react-query-essentials).
 

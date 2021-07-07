@@ -11,8 +11,8 @@ const queryClient = new QueryClient();
 ReactDOM.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <AppWithRouter />
-      {/* <App /> */}
+      {/* <AppWithRouter /> */}
+      <App />
       <ReactQueryDevtools position="bottom-right" />
     </QueryClientProvider>
   </React.StrictMode>,

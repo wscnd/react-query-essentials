@@ -6,16 +6,22 @@ type QueryPollingProps = {};
 export const QueryInvalidation = ({}: QueryPollingProps) => {
   const queryClient = useQueryClient();
 
-  const timeQuery = useQuery("time", async () => {
-    const time = await new Promise((resolve) => setTimeout(resolve, 200)).then(
-      (data) => {
+  const timeQuery = useQuery(
+    "time",
+    async () => {
+      const time = await new Promise((resolve) =>
+        setTimeout(resolve, 200),
+      ).then((data) => {
         return new Date().toLocaleString();
-      },
-    );
-    return {
-      time,
-    };
-  });
+      });
+      return {
+        time,
+      };
+    },
+    {
+      staleTime: Infinity,
+    },
+  );
 
   return (
     <div>
@@ -24,7 +30,9 @@ export const QueryInvalidation = ({}: QueryPollingProps) => {
         {timeQuery.isLoading ? "loading time..." : timeQuery.data?.time}
       </div>
       <div>
-        <button onClick={() => queryClient.invalidateQueries("time")}>
+        <button onClick={() => queryClient.invalidateQueries("time",{
+          refetchActive: false // NOTE: it isn't going to automatically refresh in the background
+        })}>
           Invalidate `time`
         </button>
       </div>

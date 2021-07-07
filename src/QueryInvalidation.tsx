@@ -1,7 +1,24 @@
-import React from "react";
+import React, { useReducer } from "react";
 import { useQuery, useQueryClient } from "react-query";
 
 type QueryPollingProps = {};
+
+export const ToggleQueryInvalidation = () => {
+  const [show, toggle] = useReducer((s) => !s, true);
+  const queryClient = useQueryClient();
+
+  return (
+    <div>
+      <button onClick={toggle}>Toggle Time</button>
+      <button onClick={() => queryClient.invalidateQueries("time",{
+        refetchInactive: true
+      })}>
+        Invalidate Time
+      </button>
+      {show ? <QueryInvalidation /> : null}
+    </div>
+  );
+};
 
 export const QueryInvalidation = ({}: QueryPollingProps) => {
   const queryClient = useQueryClient();
@@ -28,13 +45,6 @@ export const QueryInvalidation = ({}: QueryPollingProps) => {
       <h1>Server Time {timeQuery.isFetching ? "..." : null}</h1>
       <div>
         {timeQuery.isLoading ? "loading time..." : timeQuery.data?.time}
-      </div>
-      <div>
-        <button onClick={() => queryClient.invalidateQueries("time",{
-          refetchActive: false // NOTE: it isn't going to automatically refresh in the background
-        })}>
-          Invalidate `time`
-        </button>
       </div>
     </div>
   );

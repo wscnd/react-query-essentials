@@ -16,6 +16,7 @@ import { PokemonSeededQueries } from "./PokemonSeededQueries";
 import { PokemonPushedQueries } from "./PokemonPushedQueries";
 import { PokemonWithSideEffects } from "./PokemonWithSideEffects";
 import { QueryPolling } from "./QueryPolling";
+import { QueryInvalidation } from "./QueryInvalidation";
 
 function App() {
   // const [show, toggle] = useState(true);
@@ -50,7 +51,9 @@ function App() {
         {/* <PokemonPushedQueries /> */}
         {/* <PokemonWithSideEffects /> */}
 
-        <QueryPolling />
+        {/* <QueryPolling /> */}
+
+        <QueryInvalidation />
       </header>
     </div>
   );

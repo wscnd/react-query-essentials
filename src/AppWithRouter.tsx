@@ -7,8 +7,10 @@ import {
   PrefetchPokemonListRoutered,
   PrefetchPokemonRoutered,
 } from "./PrefetchingWithRoutered";
+import { PokemonMutation, PokemonListMutation } from "./Mutations";
 
 type AppWithRouterProps = {};
+
 
 export const AppWithRouter = ({}: AppWithRouterProps) => {
   return (
@@ -19,11 +21,14 @@ export const AppWithRouter = ({}: AppWithRouterProps) => {
           <Switch>
             <Route path="/:pokemonId">
               {/* <PokemonRoutered /> */}
-              <PrefetchPokemonRoutered />
+
+              {/* <PrefetchPokemonRoutered /> */}
+              <PokemonMutation />
             </Route>
             <Route path="/">
               {/* <PokemonListRoutered /> */}
-              <PrefetchPokemonListRoutered />
+              {/* <PrefetchPokemonListRoutered /> */}
+              <PokemonListMutation/>
             </Route>
           </Switch>
         </Router>

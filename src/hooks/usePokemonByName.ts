@@ -15,20 +15,20 @@ export type PokeApiResponse = {
   url?: string;
 };
 
+export const fetchPokemonByName = async (pokemonName: string) => {
+  await new Promise((res) => setTimeout(res, 2000));
+
+  return axios
+    .get<PokeApiResponse>(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
+    .then((data) => {
+      return data.data;
+    });
+};
+
 export const usePokemonByName = ({ pokemonName }: usePokemonByNameProps) => {
   return useQuery(
     ["pokemon", pokemonName],
-    async () => {
-      await new Promise((res) => setTimeout(res, 2000));
-
-      return axios
-        .get<PokeApiResponse>(
-          `https://pokeapi.co/api/v2/pokemon/${pokemonName}`,
-        )
-        .then((data) => {
-          return data.data;
-        });
-    },
+    () => fetchPokemonByName(pokemonName),
     {
       enabled: !!pokemonName,
       // retry: 1,

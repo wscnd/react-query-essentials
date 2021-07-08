@@ -24,9 +24,8 @@ export const PrefetchPokemonListRoutered = () => {
                   onMouseEnter={async () => {
                     await queryClient.prefetchQuery(
                       ["pokemon", pokemon.name],
-                      () => fetchPokemonByName(pokemon.name),{
-                        staleTime: Infinity
-                      }
+                      () => fetchPokemonByName(pokemon.name),
+                      { staleTime: 10000 , },
                     );
                     console.log(`hovered ${pokemon.name}`);
                   }}
@@ -43,7 +42,10 @@ export const PrefetchPokemonListRoutered = () => {
 export const PrefetchPokemonRoutered = () => {
   const { pokemonId } = useParams<{ pokemonId: string }>();
 
-  const pokemonQuery = usePokemonByName({ pokemonName: pokemonId });
+  const pokemonQuery = usePokemonByName({
+    pokemonName: pokemonId,
+    queryConfigs: { staleTime: 5000 },
+  });
 
   return (
     <div>

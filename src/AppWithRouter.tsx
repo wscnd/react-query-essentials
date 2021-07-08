@@ -3,6 +3,10 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import logo from "./logo.svg";
 import { PokemonListRoutered, PokemonRoutered } from "./PokemonRouterQuery";
+import {
+  PrefetchPokemonListRoutered,
+  PrefetchPokemonRoutered,
+} from "./PrefetchingWithRoutered";
 
 type AppWithRouterProps = {};
 
@@ -14,10 +18,12 @@ export const AppWithRouter = ({}: AppWithRouterProps) => {
         <Router>
           <Switch>
             <Route path="/:pokemonId">
-              <PokemonRoutered />
+              {/* <PokemonRoutered /> */}
+              <PrefetchPokemonRoutered />
             </Route>
             <Route path="/">
-              <PokemonListRoutered />
+              {/* <PokemonListRoutered /> */}
+              <PrefetchPokemonListRoutered />
             </Route>
           </Switch>
         </Router>

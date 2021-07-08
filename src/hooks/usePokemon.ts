@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery, UseQueryOptions } from "react-query";
 import axios from "axios";
 import type { Pokemon } from "../PokemonList";
 
@@ -13,6 +13,6 @@ export const fetchPokemonList = async () => {
     .then((response) => response.data.results);
 };
 
-export const usePokemon = () => {
-  return useQuery<Pokemon[]>("pokemon", fetchPokemonList);
+export const usePokemon = (queryConfigs?: UseQueryOptions<Pokemon[]>) => {
+  return useQuery<Pokemon[]>("pokemon", fetchPokemonList, { ...queryConfigs });
 };

@@ -1,8 +1,9 @@
-import { useQuery } from "react-query";
+import { useQuery, UseQueryOptions } from "react-query";
 import axios from "axios";
 
 type usePokemonByNameProps = {
   pokemonName: string;
+  queryConfigs?: UseQueryOptions<PokeApiResponse>;
 };
 
 export type PokeApiResponse = {
@@ -25,7 +26,10 @@ export const fetchPokemonByName = async (pokemonName: string) => {
     });
 };
 
-export const usePokemonByName = ({ pokemonName }: usePokemonByNameProps) => {
+export const usePokemonByName = ({
+  pokemonName,
+  queryConfigs,
+}: usePokemonByNameProps) => {
   return useQuery(
     ["pokemon", pokemonName],
     () => fetchPokemonByName(pokemonName),
@@ -35,6 +39,7 @@ export const usePokemonByName = ({ pokemonName }: usePokemonByNameProps) => {
       retry: false,
       retryDelay: /** 1000 seconds or a fancy function**/ (failureCount) =>
         Math.min(1000 * 2 ** failureCount, 30000),
+        ...queryConfigs
     },
   );
 };

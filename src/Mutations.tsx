@@ -6,7 +6,7 @@ import {
   useQueryClient,
   UseQueryResult,
 } from "react-query";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { PokemonResponse } from "../api/data";
 
 type PokemonRouterQueryProps = {};
@@ -41,7 +41,17 @@ export const PokemonListMutation = () => {
             {!!pokemonQuery.data?.length &&
               pokemonQuery.data.map((pokemon) => (
                 <li key={pokemon.id}>
-                  <Link to={`${pokemon.id}`}>{pokemon.name.english}</Link>
+                  <Link
+                    to={{
+                      pathname: `/${pokemon.id}`,
+                      state: {
+                        name: pokemon.name.english,
+                        type: pokemon.type,
+                      },
+                    }}
+                  >
+                    {pokemon.name.english}
+                  </Link>
                 </li>
               ))}
           </ul>
@@ -62,8 +72,8 @@ const usePokemonById = (
 };
 
 export const PokemonMutation = () => {
+  const { state } = useLocation<{ name: string; type: string }>();
   const { pokemonId } = useParams<{ pokemonId: string }>();
-
   const queryClient = useQueryClient();
 
   const pokemonById = useMutation(
@@ -89,7 +99,7 @@ export const PokemonMutation = () => {
 
   return (
     <div>
-      <h1>{pokemonId} page</h1>
+      <h1>{state.name} page</h1>
       <Link to={"/"}>Back</Link>
       <div>
         {pokemonQuery.isLoading ? (
@@ -98,7 +108,7 @@ export const PokemonMutation = () => {
           <>
             <div>
               <h2>{pokemonQuery.data?.name?.english}</h2>
-              <pre>type: {JSON.stringify(pokemonQuery.data?.type)}</pre>
+              <pre>type: {JSON.stringify(state.type)}</pre>
               <pre>base: {JSON.stringify(pokemonQuery.data?.base)}</pre>
             </div>
 

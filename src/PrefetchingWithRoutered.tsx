@@ -24,7 +24,9 @@ export const PrefetchPokemonListRoutered = () => {
                   onMouseEnter={async () => {
                     await queryClient.prefetchQuery(
                       ["pokemon", pokemon.name],
-                      () => fetchPokemonByName(pokemon.name),
+                      () => fetchPokemonByName(pokemon.name),{
+                        staleTime: Infinity
+                      }
                     );
                     console.log(`hovered ${pokemon.name}`);
                   }}

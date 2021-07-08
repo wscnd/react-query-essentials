@@ -20,6 +20,7 @@ import {
   QueryInvalidation,
   ToggleQueryInvalidation,
 } from "./QueryInvalidation";
+import { Prefetching } from "./Prefetching";
 
 function App() {
   // const [show, toggle] = useState(true);
@@ -58,7 +59,9 @@ function App() {
 
         {/* <QueryInvalidation /> */}
 
-        <ToggleQueryInvalidation />
+        {/* <ToggleQueryInvalidation /> */}
+
+        <Prefetching />
       </header>
     </div>
   );

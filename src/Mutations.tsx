@@ -1,6 +1,11 @@
 import axios from "axios";
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { useQuery, UseQueryResult } from "react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  UseQueryResult,
+} from "react-query";
 import { Link, useParams } from "react-router-dom";
 import { PokemonResponse } from "../api/data";
 
@@ -59,15 +64,27 @@ const usePokemonById = (
 export const PokemonMutation = () => {
   const { pokemonId } = useParams<{ pokemonId: string }>();
 
+  const queryClient = useQueryClient();
+
+  const pokemonById = useMutation(
+    (type: string[]) =>
+      axios
+        .patch(`http://localhost:3001/pokemon/${pokemonId}`, { type })
+        .then((res) => res.data),
+    {
+      onSuccess: async (result) => {
+        await queryClient.invalidateQueries("pokemon");
+        console.log("result:", result);
+      },
+    },
+  );
+
   const pokemonQuery = usePokemonById(pokemonId);
 
-  const onSubmitHandler = async (type: string[]) => {
+  const onSubmitHandler = (type: string[]) => {
     console.log("adding type", type);
-    const response = await axios.post(
-      `http://localhost:3001/pokemon/${pokemonId}`,
-      { type },
-    );
-    console.log(response);
+    const response = pokemonById.mutate(type);
+    console.log("response:", response);
   };
 
   return (
@@ -89,7 +106,15 @@ export const PokemonMutation = () => {
               type={pokemonQuery.data?.type}
               clearOnSubmit={true}
               onSubmit={onSubmitHandler}
-              submitText={"Create Pokemon"}
+              submitText={
+                pokemonById.isLoading
+                  ? "Loading..."
+                  : pokemonById.isError
+                  ? "Error"
+                  : pokemonById.isSuccess
+                  ? "Success!"
+                  : "Submit new Type"
+              }
             />
             {pokemonQuery.isFetching ? <span>Updating...</span> : null}
           </>

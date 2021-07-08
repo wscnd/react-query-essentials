@@ -7,6 +7,8 @@ import pokemon, { PokemonResponse } from "./data";
 
 dotenv.config();
 
+const delayTime = 1500;
+
 const app = express();
 
 app.use(cors());
@@ -18,7 +20,7 @@ let pokemonDb = pokemon;
 
 app.get("/", async (req, res) => {
   await new Promise((resolve) => {
-    setTimeout(resolve, 2000);
+    setTimeout(resolve, delayTime);
   });
 
   res.send({ pokemon: process.env.API_SERVER + "pokemon" });
@@ -26,7 +28,7 @@ app.get("/", async (req, res) => {
 
 app.get("/pokemon/", async (req, res) => {
   await new Promise((resolve) => {
-    setTimeout(resolve, 2000);
+    setTimeout(resolve, delayTime);
   });
 
   res.send(pokemonDb);
@@ -36,7 +38,7 @@ app.get("/pokemon/:id", async (req, res) => {
   const { id } = req.params;
 
   await new Promise((resolve) => {
-    setTimeout(resolve, 2000);
+    setTimeout(resolve, delayTime);
   });
 
   const foundPokemon = pokemonDb.find((p) => {
@@ -53,7 +55,7 @@ app.patch("/pokemon/:id", async (req, res) => {
   const update: PokemonResponse = req.body;
 
   await new Promise((resolve) => {
-    setTimeout(resolve, 2000);
+    setTimeout(resolve, delayTime);
   });
 
   pokemonDb = pokemonDb.map((pokemon) => {
@@ -75,4 +77,8 @@ const port = 3001;
 app.listen(port, () => {
   console.log(`server started at http://localhost:${port}`);
   console.log(process.env.API_SERVER);
+});
+
+app.get("/time", (req, res) => {
+  res.send(new Date());
 });

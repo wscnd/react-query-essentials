@@ -58,10 +58,14 @@ app.patch("/pokemon/:id", async (req, res) => {
     setTimeout(resolve, delayTime);
   });
 
+  if (update.type.includes("error")) {
+    res.status(500).end("An error occurred");
+    return
+  }
+
   pokemonDb = pokemonDb.map((pokemon) => {
     let pokemonToUpdate = pokemon;
     if (pokemonToUpdate.id === Number(id)) {
-      pokemonToUpdate = { ...pokemonToUpdate, ...update };
       pokemonToUpdate = { ...pokemonToUpdate, ...update };
       console.log("updates:", update);
       console.log("updating", pokemonToUpdate.id);

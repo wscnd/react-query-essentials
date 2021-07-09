@@ -122,7 +122,7 @@ export const PokemonMutation = () => {
           queryClientKey,
           queryClientUpdater,
         );
-        // return oldPosts; // NOTE: what is being returned here is passed as the third argument to onError
+        // return oldPosts; // NOTE: what is being returned here is sent as the "context" parameter to the other callbacks
         return () => queryClient.setQueryData(queryClientKey, oldPosts);
       },
       onSuccess: async (result: PokemonResponse, type, ...rest) => {
@@ -146,7 +146,11 @@ export const PokemonMutation = () => {
           rollback();
         }
       },
-      onSettled: async () => {
+      onSettled: async (data, error, variables, context) => {
+        console.log('data:', data)
+        console.log('error:', error)
+        console.log('variables:', variables)
+        console.log('context:', context)
         await queryClient.invalidateQueries(["pokemon", pokemonId]); // NOTE: now the invalidation is being handled here
       },
     },

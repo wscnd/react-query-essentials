@@ -78,13 +78,24 @@ export const PokemonMutation = () => {
   const pokemonById = useMutation(
     (type: string[]) =>
       axios
-        .patch(`http://localhost:3001/pokemon/${pokemonId}`, { type })
+        .patch<PokemonResponse>(`http://localhost:3001/pokemon/${pokemonId}`, {
+          type,
+        })
         .then((res) => res.data),
     {
-      onSuccess: async (result: PokemonResponse, originalValues) => {
-        console.log("result:", result);
-        console.log("originalValues:", originalValues);
-        queryClient.setQueryData(["pokemon", pokemonId], result); //NOTE: be 100% sure that this is the right data from the server
+      onMutate: (type) => {
+        queryClient.setQueryData<PokemonResponse>(
+          ["pokemon", pokemonId],
+          (Data): PokemonResponse => {
+            console.log("Data that was inside the key:", Data);
+            console.log("the query that was made", type);
+            return { ...Data, type } as PokemonResponse;
+          },
+        );
+      },
+      onSuccess: async (result: PokemonResponse, type) => {
+        // console.log("result:", result);
+        // console.log("originalValues:", type);
         await queryClient.invalidateQueries(["pokemon", pokemonId]); //NOTE:  either way, its best practice to invalidate the query cache
       },
     },

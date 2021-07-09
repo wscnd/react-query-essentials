@@ -69,7 +69,7 @@ app.patch("/pokemon/:id", async (req, res) => {
     return pokemonToUpdate;
   });
 
-  res.send(pokemonDb.filter((pokemon) => pokemon.id === Number(id)));
+  res.send(pokemonDb.filter((pokemon) => pokemon.id === Number(id))[0]);
 });
 
 const port = 3001;

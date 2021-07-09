@@ -26,7 +26,40 @@ app.get("/", async (req, res) => {
   res.send({ pokemon: process.env.API_SERVER + "pokemon" });
 });
 
-app.get("/pokemon/", async (req, res) => {
+app.get<
+  "/pokemon",
+  {},
+  any,
+  any,
+  { pageNumber: number; pageSize: number },
+  Record<string, any>
+>("/pokemon", async (req, res) => {
+  let { pageNumber = 1, pageSize = 10 } = req.query;
+
+  pageNumber = Number(pageNumber);
+  pageSize = Number(pageSize);
+
+  const offset = (pageNumber - 1) * pageSize;
+  // console.log("offset:", offset);
+  const total = pokemonDb.length;
+  // console.log("total:", total);
+  const items = pokemonDb.slice(offset, offset + pageSize);
+  const response = {
+    total,
+    items,
+    nextPageNumber: offset + pageSize >= total ? null : pageNumber + 1,
+    pageNumber,
+  };
+
+  await new Promise((resolve) => {
+    setTimeout(resolve, delayTime);
+  });
+
+  res.send(response);
+  console.log("response:", response);
+});
+
+app.get("/pokemon", async (req, res) => {
   await new Promise((resolve) => {
     setTimeout(resolve, delayTime);
   });
@@ -60,7 +93,7 @@ app.patch("/pokemon/:id", async (req, res) => {
 
   if (update.type.includes("error")) {
     res.status(500).end("An error occurred");
-    return
+    return;
   }
 
   pokemonDb = pokemonDb.map((pokemon) => {

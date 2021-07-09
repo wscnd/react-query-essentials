@@ -7,6 +7,7 @@ import {
   useQueryClient,
   UseQueryResult,
 } from "react-query";
+import { Updater } from "react-query/types/core/utils";
 import { Link, useParams } from "react-router-dom";
 import { PokemonResponse } from "../api/data";
 
@@ -75,7 +76,12 @@ export const PokemonMutation = () => {
 
   const queryClient = useQueryClient();
 
-  const pokemonById = useMutation(
+  const pokemonById = useMutation<
+    PokemonResponse,
+    unknown,
+    string[],
+    () => void
+  >(
     (type: string[]) =>
       axios
         .patch<PokemonResponse>(`http://localhost:3001/pokemon/${pokemonId}`, {
@@ -83,20 +89,65 @@ export const PokemonMutation = () => {
         })
         .then((res) => res.data),
     {
-      onMutate: (type) => {
+      onMutate: async (type) => {
+        await queryClient.cancelQueries(["pokemon", pokemonId]); //NOTE: avoid race conditions
+        const oldPosts = queryClient.getQueryData(["pokemon", pokemonId], {});
+
+        // NOTE: maybe this is a better way to use the queryClient?
+
+        // queryClient.setQueryData<PokemonResponse>(
+        //   ["pokemon", pokemonId],
+        //   (Data): PokemonResponse => {
+        //     console.log("Data that was inside the key:", Data);
+        //     console.log("the query that was made", type);
+        //     return { ...Data, type } as PokemonResponse;
+        //   },
+        // );
+
+        const queryClientKey = ["pokemon", pokemonId];
+        const queryClientUpdater: Updater<
+          PokemonResponse | undefined,
+          PokemonResponse
+        > = (Data) => {
+          console.log(
+            "is queryClient.getQueryData equals to Data inside here?",
+            oldPosts === Data,
+          );
+          console.log("Data that was inside the key:", Data);
+          console.log("the query that was made", type);
+          return { ...Data, type } as PokemonResponse;
+        };
+
         queryClient.setQueryData<PokemonResponse>(
-          ["pokemon", pokemonId],
-          (Data): PokemonResponse => {
-            console.log("Data that was inside the key:", Data);
-            console.log("the query that was made", type);
-            return { ...Data, type } as PokemonResponse;
-          },
+          queryClientKey,
+          queryClientUpdater,
         );
+        // return oldPosts; // NOTE: what is being returned here is passed as the third argument to onError
+        return () => queryClient.setQueryData(queryClientKey, oldPosts);
       },
-      onSuccess: async (result: PokemonResponse, type) => {
+      onSuccess: async (result: PokemonResponse, type, ...rest) => {
         // console.log("result:", result);
         // console.log("originalValues:", type);
-        await queryClient.invalidateQueries(["pokemon", pokemonId]); //NOTE:  either way, its best practice to invalidate the query cache
+        // console.log("rest:", rest);
+        // await queryClient.invalidateQueries(["pokemon", pokemonId]); //NOTE:  either way, its best practice to invalidate the query cache
+        // NOTE: we are now invalidating with the onSettled mutation
+      },
+      onError: (error, variables, rollback) => {
+        console.log("error:", error);
+        console.log("variables:", variables);
+        console.log("context:", rollback);
+
+        // window.alert(error.response.data);
+
+        // const queryClientKey = ["pokemon", pokemonId];
+        // const queryClientUpdater = context;
+        // queryClient.setQueryData(queryClientKey, queryClientUpdater);
+        if (rollback) {
+          rollback();
+        }
+      },
+      onSettled: async () => {
+        await queryClient.invalidateQueries(["pokemon", pokemonId]); // NOTE: now the invalidation is being handled here
       },
     },
   );
@@ -131,7 +182,7 @@ export const PokemonMutation = () => {
                 pokemonById.isLoading
                   ? "Loading..."
                   : pokemonById.isError
-                  ? "Error"
+                  ? "Error!"
                   : pokemonById.isSuccess
                   ? "Success!"
                   : "Submit new Type"

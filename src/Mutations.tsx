@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import {
+  QueryObserverOptions,
   useMutation,
   useQuery,
   useQueryClient,
@@ -19,12 +20,20 @@ export const PokemonRouterQuery = ({}: PokemonRouterQueryProps) => {
   );
 };
 
-const usePokemon = (): UseQueryResult<PokemonResponse[], unknown> => {
-  return useQuery("pokemon", () => {
-    return axios
-      .get<PokemonResponse[]>(`http://localhost:3001/pokemon`)
-      .then((res) => res.data);
-  });
+const usePokemon = (
+  options?: QueryObserverOptions<PokemonResponse[]>,
+): UseQueryResult<PokemonResponse[], unknown> => {
+  return useQuery(
+    "pokemon",
+    () => {
+      return axios
+        .get<PokemonResponse[]>(`http://localhost:3001/pokemon`)
+        .then((res) => res.data);
+    },
+    {
+      ...options,
+    },
+  );
 };
 
 export const PokemonListMutation = () => {
@@ -72,9 +81,11 @@ export const PokemonMutation = () => {
         .patch(`http://localhost:3001/pokemon/${pokemonId}`, { type })
         .then((res) => res.data),
     {
-      onSuccess: async (result) => {
-        await queryClient.invalidateQueries("pokemon");
+      onSuccess: async (result: PokemonResponse, originalValues) => {
         console.log("result:", result);
+        console.log("originalValues:", originalValues);
+        queryClient.setQueryData(["pokemon", pokemonId], result); //NOTE: be 100% sure that this is the right data from the server
+        await queryClient.invalidateQueries(["pokemon", pokemonId]); //NOTE:  either way, its best practice to invalidate the query cache
       },
     },
   );
@@ -89,15 +100,14 @@ export const PokemonMutation = () => {
 
   return (
     <div>
-      <h1>{pokemonId} page</h1>
-      <Link to={"/"}>Back</Link>
       <div>
         {pokemonQuery.isLoading ? (
           <span>Loading...</span>
         ) : (
           <>
             <div>
-              <h2>{pokemonQuery.data?.name?.english}</h2>
+              <h1>{pokemonQuery.data?.name?.english}</h1>
+              <Link to={"/"}>Back</Link>
               <pre>type: {JSON.stringify(pokemonQuery.data?.type)}</pre>
               <pre>base: {JSON.stringify(pokemonQuery.data?.base)}</pre>
             </div>

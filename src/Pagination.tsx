@@ -47,13 +47,15 @@ const usePokemonWithOptions = (
 export const PokemonListPagination = () => {
   const [page, setPage] = React.useState(1);
 
-  const pokemonsQuery = usePokemonWithOptions({ page });
+  const pokemonsQuery = usePokemonWithOptions(
+    { page },
+    { keepPreviousData: true }, // NOTE: better paginated queries
+  );
 
   return (
     <div>
       <h1>Pokemons! </h1>
       <h4>Current Page: {page} </h4>
-      <h5>{pokemonsQuery.isFetching ? <span>fetching...</span> : null} </h5>
 
       <div>
         <button
@@ -62,7 +64,16 @@ export const PokemonListPagination = () => {
         >
           Previous
         </button>{" "}
-        <button onClick={() => setPage((page) => page + 1)}>Next</button>
+        <button
+          disabled={
+            pokemonsQuery.isPreviousData ||
+            !Boolean(pokemonsQuery.data?.nextPageNumber)
+          }
+          onClick={() => setPage((page) => page + 1)}
+        >
+          Next
+        </button>
+        <h5>{pokemonsQuery.isFetching ? <span>fetching...</span> : null} </h5>
       </div>
       <section>
         {pokemonsQuery.isLoading ? (

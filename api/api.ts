@@ -47,7 +47,7 @@ app.get<
   const response = {
     total,
     items,
-    nextPageNumber: offset + pageSize >= total ? null : pageNumber + 1,
+    nextPageNumber: offset + pageSize >= total ? undefined : pageNumber + 1,
     pageNumber,
   };
 

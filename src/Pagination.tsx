@@ -16,7 +16,7 @@ import { Link, useParams } from "react-router-dom";
 type PagedResponse = {
   total: number;
   items: PokemonResponse[];
-  nextPageNumber: number | null;
+  nextPageNumber: number | undefined;
   pageNumber: number;
 };
 

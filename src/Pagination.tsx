@@ -3,6 +3,8 @@ import * as React from "react";
 import axios from "axios";
 import {
   QueryObserverOptions,
+  useInfiniteQuery,
+  UseInfiniteQueryOptions,
   useQuery,
   useQueryClient,
   UseQueryResult,
@@ -60,7 +62,7 @@ export const PokemonListPagination = () => {
   );
 
   React.useEffect(() => {
-    fetchNextPage()
+    fetchNextPage();
   }, [pokemonsQuery.data?.nextPageNumber]);
 
   const fetchNextPage = React.useCallback(async () => {

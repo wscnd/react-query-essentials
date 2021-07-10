@@ -9,8 +9,10 @@ import {
 } from "./PrefetchingWithRoutered";
 import { PokemonMutation, PokemonListMutation } from "./Mutations";
 import { PokemonListPagination, PokemonPagination } from "./Pagination";
+import { PokemonInfiniteList } from "./PaginationInfiniteQueries";
 
 type AppWithRouterProps = {};
+
 
 export const AppWithRouter = ({}: AppWithRouterProps) => {
   return (
@@ -29,7 +31,9 @@ export const AppWithRouter = ({}: AppWithRouterProps) => {
               {/* <PokemonListRoutered /> */}
               {/* <PrefetchPokemonListRoutered /> */}
               {/* <PokemonListMutation/> */}
-              <PokemonListPagination />
+              {/* <PokemonListPagination /> */}
+
+              <PokemonInfiniteList/>
             </Route>
           </Switch>
         </Router>

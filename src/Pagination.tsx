@@ -1,7 +1,12 @@
 import * as React from "react";
 
 import axios from "axios";
-import { QueryObserverOptions, useQuery, UseQueryResult } from "react-query";
+import {
+  QueryObserverOptions,
+  useQuery,
+  useQueryClient,
+  UseQueryResult,
+} from "react-query";
 
 import type { PokemonResponse } from "../api/data";
 import { Link, useParams } from "react-router-dom";
@@ -13,8 +18,8 @@ type PagedResponse = {
   pageNumber: number;
 };
 
-const fetchPokemon = ({ page }: { page: number }) =>
-  axios
+const fetchPokemon = ({ page }: { page: number }, ...rest: any[]) => {
+  return axios
     .get<PagedResponse>("http://localhost:3001/pokemon", {
       params: {
         pageNumber: page,
@@ -22,6 +27,7 @@ const fetchPokemon = ({ page }: { page: number }) =>
       },
     })
     .then((response) => response.data);
+};
 
 const usePokemonById = (
   id: string,
@@ -38,19 +44,40 @@ const usePokemonWithOptions = (
   options?: QueryObserverOptions<PagedResponse>,
 ) => {
   return useQuery({
-    queryFn: () => fetchPokemon({ page }),
     queryKey: ["pokemon", { page }],
+    queryFn: (...rest) => fetchPokemon({ page }, ...rest),
     ...options,
   });
 };
 
 export const PokemonListPagination = () => {
   const [page, setPage] = React.useState(1);
+  const queryClient = useQueryClient();
 
   const pokemonsQuery = usePokemonWithOptions(
     { page },
     { keepPreviousData: true }, // NOTE: better paginated queries
   );
+
+  React.useEffect(() => {
+    fetchNextPage()
+  }, [pokemonsQuery.data?.nextPageNumber]);
+
+  const fetchNextPage = React.useCallback(async () => {
+    const nextPage = pokemonsQuery.data?.nextPageNumber;
+    if (nextPage) {
+      await queryClient.prefetchQuery<
+        PagedResponse,
+        unknown,
+        PagedResponse,
+        (string | { page: number })[]
+      >({
+        queryKey: ["pokemon", { page: nextPage }],
+        queryFn: () => fetchPokemon({ page: nextPage }),
+        staleTime: 10000,
+      });
+    }
+  }, [pokemonsQuery.data?.nextPageNumber]);
 
   return (
     <div>
@@ -70,6 +97,7 @@ export const PokemonListPagination = () => {
             !Boolean(pokemonsQuery.data?.nextPageNumber)
           }
           onClick={() => setPage((page) => page + 1)}
+          onMouseEnter={fetchNextPage}
         >
           Next
         </button>
